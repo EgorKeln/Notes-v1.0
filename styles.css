@@ -1,0 +1,97 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+}
+
+header {
+    background: #333;
+    color: #fff;
+    padding: 10px 20px;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+}
+
+button {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 20px;
+    margin-right: 15px;
+    cursor: pointer;
+}
+
+button:hover {
+    color: #ccc;
+}
+
+input[type="text"] {
+    padding: 5px;
+    font-size: 16px;
+    margin-left: 10px;
+}
+
+#notes-container {
+    display: flex;
+    flex-wrap: wrap; /* Обеспечивает переход строк */
+    padding: 20px;
+}
+
+.note {
+    flex: 1 0 18%; /* Устанавливает базовую ширину элемента и позволяет ему расти */
+    box-sizing: border-box; /* Учитывает отступы и границы */
+    margin: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.popup {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.popup-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 5px;
+    width: 80%;
+    max-width: 500px;
+}
+
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.color-picker {
+    margin: 15px 0;
+}
+
+textarea {
+    width: 100%;
+    height: 100px;
+    margin-bottom: 10px;
+    padding: 5px;
+    font-size: 16px;
+}
