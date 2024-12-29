@@ -74,7 +74,19 @@ nav div {
     display: flex;
     flex-wrap: wrap;
     gap: 30px;
+    
 }
+.nav-one,
+.nav-two,
+.nav-thre {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+ 
+
 button {
     background: none;
     border: none;
@@ -96,7 +108,8 @@ button:hover {
 .note-color_white:hover,
 .note-color_red:hover,
 .note-color_yellow:hover,
-.note-color_green:hover {
+.note-color_green:hover,
+.all:hover {
     border: 3px solid var(--color5);
 }
 .note-color_white {
@@ -111,12 +124,24 @@ button:hover {
 .note-color_green {
     background-color: var(--color4);
 }
+.create {
+    font-size: 35px;
+}
+.all {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 3px solid var(--color3);
+    background: rgb(247,136,136);
+    background: linear-gradient(90deg, rgba(247,136,136,1) 0%, rgba(243,210,80,1) 50%, rgba(136,189,188,1) 100%);
+}
 
 input[type="text"] {
     border-radius: 5px;
     width: 80%;
     padding: 0 0 0 15px;
     font-size: 16px;
+    height: 30px;
 }
 
 #notes-container {
@@ -296,10 +321,6 @@ input[type="text"] {
         grid-column-end: 2;
         grid-row-start: 1;
         grid-row-end: 1;
-        display: flex;
-        flex-wrap: nowrap;
-        justify-content: center;
-        align-items: center;
         gap: 15px;
     }
     .nav-two {
@@ -310,6 +331,7 @@ input[type="text"] {
         display: flex;
         flex-flow: column;
         justify-content: center;
+        align-items: normal;
         gap: 0;
     }
     .nav-thre {
@@ -317,10 +339,6 @@ input[type="text"] {
         grid-column-end: 2;
         grid-row-start: 2;
         grid-row-end: 2;
-        display: flex;
-        flex-wrap: nowrap;
-        justify-content: center;
-        align-items: center;
         gap: 15px;
     }
     nav button {
