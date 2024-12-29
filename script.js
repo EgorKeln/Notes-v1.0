@@ -1,96 +1,108 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const createNoteButton = document.getElementById('create-note');
-    const popup = document.getElementById('note-popup');
-    const closeButton = document.getElementById('close-popup');
-    const saveButton = document.getElementById('save-note');
-    const noteContainer = document.getElementById('notes-container');
+document.addEventListener('DOMContentLoaded', () => { // Ждем полной загрузки DOM перед выполнением скрипта.
+    const createNoteButton = document.getElementById('create-note'); // Получаем элемент кнопки для создания заметки по ID.
+    const popup = document.getElementById('note-popup'); // Получаем элемент попап-окна для заметки по ID.
+    const closeButton = document.getElementById('close-popup'); // Получаем элемент кнопки закрытия попапа по ID.
+    const saveButton = document.getElementById('save-note'); // Получаем элемент кнопки сохранения заметки по ID.
+    const noteContainer = document.getElementById('notes-container'); // Получаем контейнер для заметок по ID.
     
-    const undoButton = document.getElementById('undo'); // Кнопка Undo
-    const saveNotesButton = document.getElementById('save-notes'); // Кнопка сохранения заметок
-    const loadNotesButton = document.getElementById('load-notes'); // Кнопка загрузки заметок
-    const loadNotesInput = document.createElement('input'); // Создаем input для загрузки файла
-    loadNotesInput.type = 'file'; // Задаем тип
-    loadNotesInput.accept = '.json'; // Ограничиваем выбор файлов до .json
-    loadNotesInput.style.display = 'none'; // Скрываем input
+    const undoButton = document.getElementById('undo'); // Кнопка Undo (отмена).
+    const saveNotesButton = document.getElementById('save-notes'); // Кнопка сохранения всех заметок.
+    const loadNotesButton = document.getElementById('load-notes'); // Кнопка загрузки заметок.
+    const loadNotesInput = document.createElement('input'); // Создаем элемент input для загрузки файла.
+    loadNotesInput.type = 'file'; // Устанавливаем тип input как 'file'.
+    loadNotesInput.accept = '.json'; // Ограничиваем загружаемые файлы до .json.
+    loadNotesInput.style.display = 'none'; // Скрываем input, чтобы он не отображался на странице.
 
-    document.body.appendChild(loadNotesInput); // Добавляем input в body
+    document.body.appendChild(loadNotesInput); // Добавляем скрытый input для загрузки файла в тело документа.
 
+    // Получаем кнопки для фильтрации заметок по цвету по ID.
     const allNotesButton = document.getElementById('all-notes');
     const whiteNotesButton = document.getElementById('white-notes');
     const redNotesButton = document.getElementById('red-notes');
     const yellowNotesButton = document.getElementById('yellow-notes');
     const greenNotesButton = document.getElementById('green-notes');
-    const searchInput = document.getElementById('note-search');
+    const searchInput = document.getElementById('note-search'); // Получаем поле ввода для поиска заметок.
 
-    let editingNote = null; // Для отслеживания редактируемой заметки
-    let notes = []; // Используем массив для хранения заметок
-    let history = []; // Стек действий для Undo
+    let editingNote = null; // Переменная для отслеживания редактируемой заметки (используется для обновления).
+    let notes = []; // Массив для хранения всех заметок.
+    let history = []; // Массив для хранения истории действий для функции Undo.
 
-    // Загрузка заметок из localStorage при загрузке страницы
-    loadNotes();
+    loadNotes(); // Загружаем заметки из localStorage при загрузке страницы.
 
-    // Открытие попапа
+    // Открытие попапа для создания новой заметки
     createNoteButton.addEventListener('click', () => {
-        editingNote = null; // Сброс на новой заметке
-        popup.style.display = 'block';
+        editingNote = null; // Устанавливаем редактируемую заметку в null при создании новой.
+        popup.style.display = 'block'; // Отображаем попап-окно.
+        resetInput(); // Очищаем поля ввода.
     });
 
-    // Закрыть попап
+    // Закрытие попапа
     closeButton.addEventListener('click', () => {
-        popup.style.display = 'none';
+        popup.style.display = 'none'; // Скрываем попап-окно.
     });
 
+    // Закрытие попапа при клике вне его
     window.addEventListener('click', (event) => {
-        if (event.target === popup) {
-            popup.style.display = 'none';
+        if (event.target === popup) { // Проверяем, был ли клик на попапе
+            popup.style.display = 'none'; // Если да, скрываем попап.
         }
     });
 
     // Сохранение заметки
     saveButton.addEventListener('click', () => {
-        const title = document.getElementById('note-title').value;
-        const body = document.getElementById('note-body').value;
-        const color = document.getElementById('note-color').value;
-
-        if (title && body) {
-            const newNote = { title, body, color };
-            const previousState = JSON.stringify(notes); // Сохраняем предыдущее состояние
-
-            if (editingNote) {
-                // Обновление существующей заметки
-                editingNote.querySelector('.note-title').innerText = title;
-                editingNote.querySelector('.note-body').innerText = body;
-                editingNote.style.backgroundColor = color;
-
-                // Удаляем старую заметку из массива и добавляем обновленную
+        const title = document.getElementById('note-title').value; // Получаем значение заголовка заметки.
+        const body = document.getElementById('note-body').value; // Получаем текст заметки.
+        const color = document.getElementById('note-color').value; // Получаем цвет заметки.
+    
+        if (title && body) { // Проверяем, что поля заголовка и текста не пустые.
+            // Проверка на уникальность заголовка
+            const titleExists = notes.some(note => note.title === title);
+            
+            if (editingNote) { // Если редактируем существующую заметку
+                // Обновляем содержимое заметки
+                editingNote.querySelector('.note-title').innerText = title; // Обновляем заголовок заметки.
+                editingNote.querySelector('.note-body').innerText = body; // Обновляем текст заметки.
+                editingNote.style.backgroundColor = color; // Обновляем цвет заметки.
+    
+                // Изменяем заметку в массиве, заменяя старую на обновленную
                 notes = notes.map(note => (note.title === editingNote.querySelector('.note-title').innerText)
-                    ? newNote : note);
-                updateLocalStorage();
+                    ? { title, body, color } : note);
+                updateLocalStorage(); // Обновляем хранилище localStorage.
             } else {
-                // Создание новой заметки
-                notes.push(newNote);
-                updateLocalStorage();
+                // Если это новая заметка, проверяем уникальность заголовка
+                if (titleExists) {
+                    alert('Заголовок уже существует! Пожалуйста, используйте другой заголовок.'); // Предупреждение о существующем заголовке
+                    return; // Выходим, не добавляя заметку
+                }
+                // Если это новая заметка, добавляем в массив
+                notes.push({ title, body, color }); // Добавляем новую заметку в массив.
+                updateLocalStorage(); // Обновляем хранилище localStorage.
             }
+            
             // Записываем действие в историю
-            history.push({ type: 'add', state: previousState });
-            if (history.length > 5) history.shift(); // Ограничиваем историю до 5 действий
-
+            const previousState = JSON.stringify(notes); // Сохраняем предыдущее состояние заметок в JSON-формате.
+            history.push({ type: 'add', state: previousState }); // Добавляем последнее состояние в историю.
+            if (history.length > 5) history.shift(); // Ограничиваем историю до 5 последних действий.
+    
             // Сброс ввода после сохранения заметки
-            resetInput();
-            popup.style.display = 'none';
-            displayNotes(notes);
+            resetInput(); // Очищаем поля ввода.
+            popup.style.display = 'none'; // Закрываем попап.
+            displayNotes(notes); // Обновляем отображение всех заметок.
         } else {
-            alert('Пожалуйста, заполните все поля!');
+            alert('Пожалуйста, заполните все поля!'); // Выводим сообщение, если поля пустые.
         }
     });
 
+
+    
     // Обработчик для кнопки Undo
     undoButton.addEventListener('click', () => {
-        if (history.length > 0) {
+        if (history.length > 0) { // Проверяем, есть ли действия для отмены
             const lastAction = history.pop(); // Удаляем последнее действие из истории
-            restoreState(lastAction.state); // Восстанавливаем предыдущее состояние
+            restoreState(lastAction.state); // Восстанавливаем предыдущее состояние заметок
         }
     });
+
 
     // Восстановление состояния заметок
     function restoreState(state) {
@@ -99,19 +111,24 @@ document.addEventListener('DOMContentLoaded', () => {
         displayNotes(notes); // Обновляем отображаемые заметки
     }
 
+
     // Функция для редактирования заметки
-    function editNote(note) {
-        const title = note.querySelector('.note-title').innerText;
-        const body = note.querySelector('.note-body').innerText;
-        const color = note.style.backgroundColor;
+    function editNote(note) { // Определяем функцию editNote, которая принимает один параметр - объект заметки (note).
+    
+    const title = note.querySelector('.note-title').innerText; // Извлекаем заголовок заметки из элемента с классом 'note-title'.
+    const body = note.querySelector('.note-body').innerText; // Извлекаем текст заметки из элемента с классом 'note-body'.
+    const color = note.style.backgroundColor; // Извлекаем цвет фона заметки из стиля элемента.
+    
+    document.getElementById('note-title').value = title; // Устанавливаем значение заголовка выбранной заметки в поле ввода заголовка попапа.
+    document.getElementById('note-body').value = body; // Устанавливаем текст заметки в поле ввода тела заметки в попапе.
+    document.getElementById('note-color').value = color; // Устанавливаем цвет в поле выбора цвета заметки в попапе.
 
-        document.getElementById('note-title').value = title;
-        document.getElementById('note-body').value = body;
-        document.getElementById('note-color').value = color;
+    editingNote = note; // Сохраняем ссылку на редактируемую заметку для дальнейшего обновления.
+    popup.style.display = 'block'; // Отображаем попап для редактирования заметки.
+}
 
-        editingNote = note;
-        popup.style.display = 'block';
-    }
+
+
 
     // Функция для удаления заметки
     function deleteNote(note) {
@@ -133,7 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function resetInput() {
         document.getElementById('note-title').value = '';
         document.getElementById('note-body').value = '';
-        document.getElementById('note-color').value = 'white';
+        document.getElementById('note-color').value = '#ECECEC';
         searchInput.value = ''; // Сброс поля поиска
     }
 
@@ -174,10 +191,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Отображение заметок с учетом сортировки
     function displayNotes(notesToDisplay) {
         const colorOrder = {
-            'white': 1,
-            'red': 2,
-            'yellow': 3,
-            'green': 4
+            '#ECECEC': 1,
+            '#F78888': 2,
+            '#F3D250': 3,
+            '#88BDBC': 4
         };
 
         notesToDisplay.sort((a, b) => colorOrder[a.color] - colorOrder[b.color]);
@@ -191,10 +208,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Фильтрация заметок по цвету
     allNotesButton.addEventListener('click', () => displayNotes(notes));
-    whiteNotesButton.addEventListener('click', () => displayNotes(notes.filter(note => note.color === 'white')));
-    redNotesButton.addEventListener('click', () => displayNotes(notes.filter(note => note.color === 'red')));
-    yellowNotesButton.addEventListener('click', () => displayNotes(notes.filter(note => note.color === 'yellow')));
-    greenNotesButton.addEventListener('click', () => displayNotes(notes.filter(note => note.color === 'green')));
+    whiteNotesButton.addEventListener('click', () => displayNotes(notes.filter(note => note.color === '#ECECEC')));
+    redNotesButton.addEventListener('click', () => displayNotes(notes.filter(note => note.color === '#F78888')));
+    yellowNotesButton.addEventListener('click', () => displayNotes(notes.filter(note => note.color === '#F3D250')));
+    greenNotesButton.addEventListener('click', () => displayNotes(notes.filter(note => note.color === '#88BDBC')));
 
     // Поиск заметок
     searchInput.addEventListener('input', () => {
@@ -242,3 +259,4 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+

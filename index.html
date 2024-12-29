@@ -5,21 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Приложение для заметок</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="icon" href="/favickon/notepad (3).png" type="image/x-icon"> <!-- Фавикон -->
 </head>
 <body>
     <div id="app">
         <header>
             <nav>
-                <button id="load-notes" title="Загрузить заметки"><i class="fas fa-cloud-download-alt"></i></button>
-                <button id="save-notes" title="Сохранить заметки"><i class="fas fa-cloud-upload-alt"></i></button>
-                <button id="create-note" title="Создать заметку"><i class="fas fa-plus"></i></button>
-                <button id="all-notes" title="Все заметки"><i class="fas fa-list"></i></button>
-                <button style="color: rgb(255, 255, 255);" id="white-notes" title="Белые заметки"><i class="fas fa-square"></i></button>
-                <button style="color: rgb(255, 0, 0);" id="red-notes" title="Красные заметки"><i class="fas fa-square"></i></button>
-                <button style="color: rgb(233, 236, 21);" id="yellow-notes" title="Желтые заметки"><i class="fas fa-square"></i></button>
-                <button style="color: rgb(127, 253, 0);" id="green-notes" title="Зеленые заметки"><i class="fas fa-square"></i></button>
-                <button id="undo" title="Отменить"><i class="fas fa-undo"></i></button>
+                <button class="create" id="create-note" title="Создать заметку"><i class="fas fa-plus"></i></button>
+                
+                <button class="load" id="load-notes" title="Загрузить заметки"><i class="fas fa-cloud-download-alt"></i></button>
+                <button class="save" id="save-notes" title="Сохранить заметки"><i class="fas fa-cloud-upload-alt"></i></button>
+                <button class="reply" id="undo" title="Отменить"><i class="fa-solid fa-reply"></i></button>
+                <button class="all" id="all-notes" title="Все заметки"><i class="fas fa-list"></i></button>
+                <button class="note-color_white" id="white-notes" title="Белые заметки"></button>
+                <button class="note-color_red" id="red-notes" title="Красные заметки"></button>
+                <button class="note-color_yellow" id="yellow-notes" title="Желтые заметки"></button>
+                <button class="note-color_green" id="green-notes" title="Зеленые заметки"></button>
                 <input type="text" id="note-search" placeholder="Поиск заметок" />
             </nav>
         </header>
@@ -32,20 +34,21 @@
         <!-- Попап для создания заметки -->
         <div id="note-popup" class="popup">
             <div class="popup-content">
-                <span class="close-btn" id="close-popup">&times;</span>
-                <h2>Создать заметку</h2>
-                <input type="text" id="note-title" placeholder="Заголовок заметки" />
-                <textarea id="note-body" placeholder="Текст заметки"></textarea>
+                <!-- <span class="close-btn" id="close-popup">&times;</span> -->
+                <!-- <h2>Создать заметку</h2> -->
+                <input class="note-title_input" type="text" id="note-title" placeholder="Заголовок заметки" />
+                <textarea class="note-body_textarea" id="note-body" placeholder="Текст заметки"></textarea>
                 <div class="color-picker">
-                    <label>Выберите цвет:</label>
+                    <label>Цвет:</label>
                     <select id="note-color">
-                        <option value="white">Белый</option>
-                        <option value="red">Красный</option>
-                        <option value="yellow">Желтый</option>
-                        <option value="green">Зеленый</option>
+                        <option value="#ECECEC" selected>Белый</option>
+                        <option value="#F78888">Красный</option>
+                        <option value="#F3D250">Желтый</option>
+                        <option value="#88BDBC">Зеленый</option>
                     </select>
                 </div>
-                <button id="save-note">Сохранить</button>
+                <button class="save-btn" id="save-note">Сохранить</button>
+                <button class="close-btn" id="close-popup">Закрыть</button>
             </div>
         </div>
     </div>
