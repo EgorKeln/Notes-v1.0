@@ -345,7 +345,7 @@ input[type="text"] {
     }
 
     .popup-content {
-        height: 70%; 
+        height: 90%; 
         width: 100%;
         max-width: 90%;
         justify-content: start;
