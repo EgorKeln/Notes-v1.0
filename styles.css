@@ -63,12 +63,17 @@ header {
     /* border: 1px solid red; */
 }
 nav {
-    
+    display: flex;
+    flex-wrap: wrap;
+    gap: 50px;
+    width: 95%;
+    /* border: 1px solid red; */
+}
+nav div {
+    /* border: 2px solid red; */
     display: flex;
     flex-wrap: wrap;
     gap: 30px;
-    width: 95%;
-    /* border: 1px solid red; */
 }
 button {
     background: none;
@@ -92,7 +97,7 @@ button:hover {
 .note-color_red:hover,
 .note-color_yellow:hover,
 .note-color_green:hover {
-    border: 2px solid var(--color5);
+    border: 3px solid var(--color5);
 }
 .note-color_white {
     background-color: var(--color3);
@@ -109,7 +114,7 @@ button:hover {
 
 input[type="text"] {
     border-radius: 5px;
-    width: 30%;
+    width: 80%;
     padding: 0 0 0 15px;
     font-size: 16px;
 }
@@ -135,7 +140,9 @@ input[type="text"] {
 .note:hover {
     box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
 }
-.note-title {
+
+.note-title,
+.note-title_input {
     /* border: 1px solid red; */
     background-color: #fff;
     width: auto;
@@ -148,14 +155,15 @@ input[type="text"] {
     border-radius: 5px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
-.note-body {
+.note-body,
+.note-body_textarea {
     /* border: 1px solid red; */
     background-color: #fff;
     width: 100%;
     height: 100px;
     overflow: hidden;
     margin-bottom: 15px;
-    padding: 15px;
+    padding: 5px;
     border-radius: 5px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
@@ -265,24 +273,55 @@ input[type="text"] {
 }
 
 
-
-/* Медиазапрос для планшетов (ширина экрана 768px и меньше) */
-@media (max-width: 768px) {
-    
-}
-
 /* Медиазапрос для мобильных устройств (ширина экрана 480px и меньше) */
 @media (max-width: 768px) {
     header {
         height: auto;
+        /* border: 1px solid red; */
     }
     nav {
-        display: flex;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        /* display: flex;
         flex-wrap: wrap;
-        justify-content: start;
+        justify-content: start; */
+        width: 100%;
         gap: 0;
         padding: 0;
         margin: 0;
+        /* border: 1px solid rgb(43, 255, 0); */
+    }
+    .nav-one {
+        grid-column-start: 1;
+        grid-column-end: 2;
+        grid-row-start: 1;
+        grid-row-end: 1;
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+    }
+    .nav-two {
+        grid-column-start: 3;
+        grid-column-end: 3;
+        grid-row-start: 1;
+        grid-row-end: 3;
+        display: flex;
+        flex-flow: column;
+        justify-content: center;
+        gap: 0;
+    }
+    .nav-thre {
+        grid-column-start: 1;
+        grid-column-end: 2;
+        grid-row-start: 2;
+        grid-row-end: 2;
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
     }
     nav button {
         /* border: 1px solid red; */
@@ -306,14 +345,14 @@ input[type="text"] {
     }
 
     .popup-content {
-        height: 45%; 
+        height: 70%; 
         width: 100%;
         max-width: 90%;
         justify-content: start;
     }
     .color-picker {
         /* border: 1px solid rgb(0, 247, 255); */
-        width: 37%;
+        width: 35%;
         color: var(--color5);
         font-size: 12px;
     }
@@ -322,7 +361,7 @@ input[type="text"] {
         height: 35px;
         border-radius: 5px;
         color: var(--color5);
-        font-size: 15px;
+        font-size: 12px;
     }
     .close-btn {
         font-size: 15px;
