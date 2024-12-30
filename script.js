@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => { // Ждем полной �
         }
     });
 
-    // Сохранение заметки
+    //Сохранение заметки
     saveButton.addEventListener('click', () => {
         const title = document.getElementById('note-title').value; // Получаем значение заголовка заметки.
         const body = document.getElementById('note-body').value; // Получаем текст заметки.
@@ -59,15 +59,26 @@ document.addEventListener('DOMContentLoaded', () => { // Ждем полной �
             const titleExists = notes.some(note => note.title === title);
             
             if (editingNote) { // Если редактируем существующую заметку
-                // Обновляем содержимое заметки
-                editingNote.querySelector('.note-title').innerText = title; // Обновляем заголовок заметки.
-                editingNote.querySelector('.note-body').innerText = body; // Обновляем текст заметки.
-                editingNote.style.backgroundColor = color; // Обновляем цвет заметки.
-    
-                // Изменяем заметку в массиве, заменяя старую на обновленную
-                notes = notes.map(note => (note.title === editingNote.querySelector('.note-title').innerText)
-                    ? { title, body, color } : note);
-                updateLocalStorage(); // Обновляем хранилище localStorage.
+ 
+                    // Получаем заголовок редактируемой заметки
+                    const editingTitle = editingNote.querySelector('.note-title').innerText;
+
+                    // Находим индекс заметки, которую мы редактируем
+                    const index = notes.findIndex(note => note.title === editingTitle);
+
+                    if (index !== -1) {
+                        // Удаляем старую заметку
+                        notes.splice(index, 1);
+
+                        // Создаем новый объект с обновленными значениями
+                        const updatedNote = { title, body, color };
+
+                        // Добавляем новую заметку в массив
+                        notes.push(updatedNote);
+
+                        // Обновляем хранилище localStorage
+                        updateLocalStorage();
+                    }
             } else {
                 // Если это новая заметка, проверяем уникальность заголовка
                 if (titleExists) {
@@ -82,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => { // Ждем полной �
             // Записываем действие в историю
             const previousState = JSON.stringify(notes); // Сохраняем предыдущее состояние заметок в JSON-формате.
             history.push({ type: 'add', state: previousState }); // Добавляем последнее состояние в историю.
-            if (history.length > 5) history.shift(); // Ограничиваем историю до 5 последних действий.
+            if (history.length > 20) history.shift(); // Ограничиваем историю до 20 последних действий.
     
             // Сброс ввода после сохранения заметки
             resetInput(); // Очищаем поля ввода.
@@ -93,8 +104,6 @@ document.addEventListener('DOMContentLoaded', () => { // Ждем полной �
         }
     });
 
-
-    
     // Обработчик для кнопки Undo
     undoButton.addEventListener('click', () => {
         if (history.length > 0) { // Проверяем, есть ли действия для отмены
@@ -103,14 +112,12 @@ document.addEventListener('DOMContentLoaded', () => { // Ждем полной �
         }
     });
 
-
     // Восстановление состояния заметок
     function restoreState(state) {
         notes = JSON.parse(state); // Получаем заметки из сохраненного состояния
         updateLocalStorage(); // Обновляем localStorage
         displayNotes(notes); // Обновляем отображаемые заметки
     }
-
 
     // Функция для редактирования заметки
     function editNote(note) { // Определяем функцию editNote, которая принимает один параметр - объект заметки (note).
@@ -128,8 +135,6 @@ document.addEventListener('DOMContentLoaded', () => { // Ждем полной �
 }
 
 
-
-
     // Функция для удаления заметки
     function deleteNote(note) {
         if (confirm('Вы уверены, что хотите удалить эту заметку?')) {
@@ -140,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => { // Ждем полной �
 
             // Записываем действие в историю
             history.push({ type: 'delete', state: previousState });
-            if (history.length > 5) history.shift(); // Ограничиваем историю до 5 действий
+            if (history.length > 20) history.shift(); // Ограничиваем историю до 20 действий
 
             displayNotes(notes);
         }
@@ -150,7 +155,7 @@ document.addEventListener('DOMContentLoaded', () => { // Ждем полной �
     function resetInput() {
         document.getElementById('note-title').value = '';
         document.getElementById('note-body').value = '';
-        document.getElementById('note-color').value = '#ECECEC';
+        document.getElementById('note-color').value = 'rgb(236, 236, 236)';
         searchInput.value = ''; // Сброс поля поиска
     }
 
@@ -188,40 +193,41 @@ document.addEventListener('DOMContentLoaded', () => { // Ждем полной �
         notes = JSON.parse(localStorage.getItem('notes')) || [];
         displayNotes(notes);
     }
-    // Отображение заметок с учетом сортировки
-    function displayNotes(notesToDisplay) {
-        const colorOrder = {
-            '#ECECEC': 1,
-            '#F78888': 2,
-            '#F3D250': 3,
-            '#88BDBC': 4
-        };
 
-        notesToDisplay.sort((a, b) => colorOrder[a.color] - colorOrder[b.color]);
+ // Отображение заметок с учетом сортировки
+ function displayNotes(notesToDisplay) {
+    const colorOrder = {
+        'rgb(236, 236, 236)': 1,
+        'rgb(247, 136, 136)': 2,
+        'rgb(243, 210, 80)': 3,
+        'rgb(136, 189, 188)': 4
+    };
 
-        noteContainer.innerHTML = ''; // Очищаем контейнер
-        notesToDisplay.forEach(note => {
-            const noteDiv = createNoteElement(note);
-            noteContainer.appendChild(noteDiv);
-        });
-    }
+    notesToDisplay.sort((a, b) => colorOrder[a.color] - colorOrder[b.color]);
 
-    // Фильтрация заметок по цвету
-    allNotesButton.addEventListener('click', () => displayNotes(notes));
-    whiteNotesButton.addEventListener('click', () => displayNotes(notes.filter(note => note.color === '#ECECEC')));
-    redNotesButton.addEventListener('click', () => displayNotes(notes.filter(note => note.color === '#F78888')));
-    yellowNotesButton.addEventListener('click', () => displayNotes(notes.filter(note => note.color === '#F3D250')));
-    greenNotesButton.addEventListener('click', () => displayNotes(notes.filter(note => note.color === '#88BDBC')));
-
-    // Поиск заметок
-    searchInput.addEventListener('input', () => {
-        const searchText = searchInput.value.toLowerCase();
-        const filteredNotes = notes.filter(note => 
-            note.title.toLowerCase().includes(searchText) || 
-            note.body.toLowerCase().includes(searchText)
-        );
-        displayNotes(filteredNotes);
+    noteContainer.innerHTML = ''; // Очищаем контейнер
+    notesToDisplay.forEach(note => {
+        const noteDiv = createNoteElement(note);
+        noteContainer.appendChild(noteDiv);
     });
+}
+
+// Фильтрация заметок по цвету
+allNotesButton.addEventListener('click', () => displayNotes(notes));
+whiteNotesButton.addEventListener('click', () => displayNotes(notes.filter(note => note.color === 'rgb(236, 236, 236)')));
+redNotesButton.addEventListener('click', () => displayNotes(notes.filter(note => note.color === 'rgb(247, 136, 136)')));
+yellowNotesButton.addEventListener('click', () => displayNotes(notes.filter(note => note.color === 'rgb(243, 210, 80)')));
+greenNotesButton.addEventListener('click', () => displayNotes(notes.filter(note => note.color === 'rgb(136, 189, 188)')));
+
+// Поиск заметок
+searchInput.addEventListener('input', () => {
+    const searchText = searchInput.value.toLowerCase();
+    const filteredNotes = notes.filter(note => 
+        note.title.toLowerCase().includes(searchText) || 
+        note.body.toLowerCase().includes(searchText)
+    );
+    displayNotes(filteredNotes);
+});
 
     // Сохранение заметок в файл
     saveNotesButton.addEventListener('click', () => {
@@ -259,4 +265,3 @@ document.addEventListener('DOMContentLoaded', () => { // Ждем полной �
         }
     });
 });
-

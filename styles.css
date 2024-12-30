@@ -144,6 +144,11 @@ input[type="text"] {
     height: 30px;
 }
 
+.highlight {
+    background-color: rgb(229, 255, 0); /* Подсветка фоном */
+    font-weight: bold; /* Можно выделить текст жирным */
+}
+
 #notes-container {
     display: flex;
     flex-wrap: wrap; /* Обеспечивает переход строк */
