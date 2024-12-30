@@ -166,11 +166,21 @@ document.addEventListener('DOMContentLoaded', () => { // Ждем полной �
         noteDiv.style.backgroundColor = color;
         
         noteDiv.innerHTML = `
-            <strong class="note-title">${title}</strong>
-            <p class="note-body">${body}</p>
-            <button class="edit-note">Редактировать</button>
-            <button class="delete-note">Удалить</button>
-        `;
+        <strong class="note-title">${title}</strong>
+        <p class="note-body">${body}</p>
+        <button class="edit-note">Редактировать</button>
+        <button class="delete-note">Удалить</button>
+    `;
+
+        // <button class="edit-note">
+        //     <span class="material-icons">edit</span> <!-- Иконка редактирования -->
+        // </button>
+        // <button class="delete-note">
+        //     <span class="material-icons">delete</span> <!-- Иконка удаления -->
+        // </button>
+
+
+
 
         // Добавление обработчиков для редактирования и удаления
         noteDiv.querySelector('.edit-note').addEventListener('click', () => {
