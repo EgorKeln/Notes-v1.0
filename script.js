@@ -258,9 +258,13 @@ document.addEventListener('DOMContentLoaded', () => { // Ждем полной �
  function displayNotes(notesToDisplay) {
     const colorOrder = {
         'rgba(236, 236, 236, 0.5)': 1,
+        'rgb(236, 236, 236)': 1,
         'rgba(247, 136, 136, 0.5)': 2,
+        'rgb(247, 136, 136)': 2,
         'rgba(243, 210, 80, 0.5)': 3,
-        'rgba(136, 189, 188, 0.5)': 4
+        'rgb(243, 210, 80)': 3,
+        'rgba(136, 189, 188, 0.5)': 4,
+        'rgb(136, 189, 188)': 4
     };
 
     notesToDisplay.sort((a, b) => colorOrder[a.color] - colorOrder[b.color]);
@@ -274,10 +278,26 @@ document.addEventListener('DOMContentLoaded', () => { // Ждем полной �
 
 // Фильтрация заметок по цвету
 allNotesButton.addEventListener('click', () => displayNotes(notes));
-whiteNotesButton.addEventListener('click', () => displayNotes(notes.filter(note => note.color === 'rgba(236, 236, 236, 0.5)')));
-redNotesButton.addEventListener('click', () => displayNotes(notes.filter(note => note.color === 'rgba(247, 136, 136, 0.5)')));
-yellowNotesButton.addEventListener('click', () => displayNotes(notes.filter(note => note.color === 'rgba(243, 210, 80, 0.5)')));
-greenNotesButton.addEventListener('click', () => displayNotes(notes.filter(note => note.color === 'rgba(136, 189, 188, 0.5)')));
+whiteNotesButton.addEventListener('click', () => 
+    displayNotes(notes.filter(note => 
+        note.color === 'rgba(236, 236, 236, 0.5)' || note.color === 'rgb(236, 236, 236)' // Фильтрация по двум цветам
+    ))
+);
+redNotesButton.addEventListener('click', () => 
+    displayNotes(notes.filter(note => 
+        note.color === 'rgba(247, 136, 136, 0.5)' || note.color === 'rgb(247, 136, 136)' // Фильтрация по двум цветам
+    ))
+);
+yellowNotesButton.addEventListener('click', () => 
+    displayNotes(notes.filter(note => 
+        note.color === 'rgba(243, 210, 80, 0.5)' || note.color === 'rgb(243, 210, 80)' // Фильтрация по двум цветам
+    ))
+);
+greenNotesButton.addEventListener('click', () => 
+    displayNotes(notes.filter(note => 
+        note.color === 'rgba(136, 189, 188, 0.5)' || note.color === 'rgb(136, 189, 188)' // Фильтрация по двум цветам
+    ))
+);
 
 // Поиск заметок
 searchInput.addEventListener('input', () => {
