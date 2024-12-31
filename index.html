@@ -40,6 +40,30 @@
                 <!-- Заметки будут добавляться сюда -->
             </div>
         </main>
+
+         <!-- модальное окно подтверждения удаления заметки -->
+        <div id="deleteConfirmation" class="modal">
+            <div class="modal-content">
+                <h4><i class="fa-solid fa-triangle-exclamation"></i></h4>
+                <p>Удалить эту заметку?</p>
+                <div class="modal-content_button">
+                    <button id="confirmDelete">Да</button>
+                    <button id="cancelDelete">Нет</button>
+                </div>
+                
+            </div>
+        </div>
+
+        <!-- модальное окно предупреждение о дублировании заголовка -->
+        <div id="notification" class="modal">
+            <div class="modal-content">
+                <h4><i class="fa-solid fa-triangle-exclamation"></i></h4>
+                <span id="notificationMessage"></span>
+                <div class="modal-content_button">
+                    <button id="closeNotification">Закрыть</button>
+                </div>
+            </div>
+        </div>
         
         <!-- Попап для создания заметки -->
         <div id="note-popup" class="popup">

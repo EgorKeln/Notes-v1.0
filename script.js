@@ -29,6 +29,26 @@ document.addEventListener('DOMContentLoaded', () => { // Ждем полной �
 
     loadNotes(); // Загружаем заметки из localStorage при загрузке страницы.
 
+    //================================================фывфыв
+    function showNotification(message) {
+        const notification = document.getElementById('notification');
+        const notificationMessage = document.getElementById('notificationMessage');
+        const closeNotificationButton = document.getElementById('closeNotification');
+    
+        notificationMessage.innerText = message;
+        notification.style.display = 'block';
+    
+        closeNotificationButton.onclick = () => {
+            notification.style.display = 'none';
+        };
+    
+        // Автоматически скрыть уведомление через 5 секунд
+        setTimeout(() => {
+            notification.style.display = 'none';
+        }, 5000);
+    }
+    //================================================фывфыв
+
     // Открытие попапа для создания новой заметки
     createNoteButton.addEventListener('click', () => {
         editingNote = null; // Устанавливаем редактируемую заметку в null при создании новой.
@@ -48,11 +68,13 @@ document.addEventListener('DOMContentLoaded', () => { // Ждем полной �
         }
     });
 
+
 // Сохранение заметки
 saveButton.addEventListener('click', () => {
     const title = document.getElementById('note-title').value; // Получаем значение заголовка заметки.
     const body = document.getElementById('note-body').value; // Получаем текст заметки.
     const color = document.getElementById('note-color').value; // Получаем цвет заметки.
+    
 
     if (title && body) { // Проверяем, что поля заголовка и текста не пустые.
         // Преобразуем текст заметки для сохранения с переносами строк
@@ -87,7 +109,7 @@ saveButton.addEventListener('click', () => {
         } else {
             // Если это новая заметка, проверяем уникальность заголовка
             if (titleExists) {
-                alert('Заголовок уже существует! Пожалуйста, используйте другой заголовок.'); // Предупреждение о существующем заголовке
+                showNotification('Заголовок уже существует!'); // Предупреждение о существующем заголовке
                 return; // Выходим, не добавляя заметку
             }
             // Если это новая заметка, добавляем в массив
@@ -105,9 +127,11 @@ saveButton.addEventListener('click', () => {
         popup.style.display = 'none'; // Закрываем попап.
         displayNotes(notes); // Обновляем отображение всех заметок.
     } else {
-        alert('Пожалуйста, заполните все поля!'); // Выводим сообщение, если поля пустые.
+        showNotification('Заполните все поля!'); // Выводим сообщение, если поля пустые.
     }
 });
+
+
 
     // Обработчик для кнопки Undo
     undoButton.addEventListener('click', () => {
@@ -140,21 +164,45 @@ saveButton.addEventListener('click', () => {
 }
 
 
-    // Функция для удаления заметки
+// // Функция для удаления заметки
     function deleteNote(note) {
-        if (confirm('Вы уверены, что хотите удалить эту заметку?')) {
+        // Отображаем модальное окно подтверждения
+        const modal = document.getElementById('deleteConfirmation');
+        modal.style.display = 'block';
+        
+        // Получаем кнопки подтверждения и отмены
+        const confirmDelete = document.getElementById('confirmDelete');
+        const cancelDelete = document.getElementById('cancelDelete');
+    
+        // Обработчик кнопки подтверждения
+        confirmDelete.onclick = function() {
             const previousState = JSON.stringify(notes); // Сохраняем предыдущее состояние перед удалением
             note.remove();
             notes = notes.filter(n => n.title !== note.querySelector('.note-title').innerText);
             updateLocalStorage(); // Обновляем localStorage после удаления
-
+    
             // Записываем действие в историю
             history.push({ type: 'delete', state: previousState });
             if (history.length > 20) history.shift(); // Ограничиваем историю до 20 действий
-
+    
             displayNotes(notes);
-        }
+            modal.style.display = 'none'; // Закрываем модальное окно
+        };
+    
+        // Обработчик кнопки отмены
+        cancelDelete.onclick = function() {
+            modal.style.display = 'none'; // Закрываем модальное окно
+        };
     }
+    
+    // Закрываем модальное окно при нажатии вне его
+    window.onclick = function(event) {
+        const modal = document.getElementById('deleteConfirmation');
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    };
+
 
     // Функция для сброса ввода
     function resetInput() {
@@ -183,9 +231,6 @@ saveButton.addEventListener('click', () => {
         // <button class="delete-note">
         //     <span class="material-icons">delete</span> <!-- Иконка удаления -->
         // </button>
-
-
-
 
         // Добавление обработчиков для редактирования и удаления
         noteDiv.querySelector('.edit-note').addEventListener('click', () => {
@@ -273,7 +318,8 @@ searchInput.addEventListener('input', () => {
                     updateLocalStorage(); // Обновляем localStorage
                     displayNotes(notes); // Отображаем загруженные заметки
                 } catch (error) {
-                    alert('Невозможно загрузить заметки. Убедитесь, что файл в правильном формате.');
+                    // alert('Невозможно загрузить заметки. Убедитесь, что файл в правильном формате.');
+                    showNotification('Невозможно загрузить!'); 
                 }
             };
             reader.readAsText(file);
