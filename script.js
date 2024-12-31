@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => { // Ждем полной �
 
 
 // Сохранение заметки
-saveButton.addEventListener('click', () => {
+    saveButton.addEventListener('click', () => {
     const title = document.getElementById('note-title').value; // Получаем значение заголовка заметки.
     const body = document.getElementById('note-body').value; // Получаем текст заметки.
     const color = document.getElementById('note-color').value; // Получаем цвет заметки.
@@ -208,7 +208,7 @@ saveButton.addEventListener('click', () => {
     function resetInput() {
         document.getElementById('note-title').value = '';
         document.getElementById('note-body').value = '';
-        document.getElementById('note-color').value = 'rgb(236, 236, 236)';
+        document.getElementById('note-color').value = 'rgba(236, 236, 236, 0.5)';
         searchInput.value = ''; // Сброс поля поиска
     }
 
@@ -257,10 +257,10 @@ saveButton.addEventListener('click', () => {
  // Отображение заметок с учетом сортировки
  function displayNotes(notesToDisplay) {
     const colorOrder = {
-        'rgb(236, 236, 236)': 1,
-        'rgb(247, 136, 136)': 2,
-        'rgb(243, 210, 80)': 3,
-        'rgb(136, 189, 188)': 4
+        'rgba(236, 236, 236, 0.5)': 1,
+        'rgba(247, 136, 136, 0.5)': 2,
+        'rgba(243, 210, 80, 0.5)': 3,
+        'rgba(136, 189, 188, 0.5)': 4
     };
 
     notesToDisplay.sort((a, b) => colorOrder[a.color] - colorOrder[b.color]);
@@ -274,10 +274,10 @@ saveButton.addEventListener('click', () => {
 
 // Фильтрация заметок по цвету
 allNotesButton.addEventListener('click', () => displayNotes(notes));
-whiteNotesButton.addEventListener('click', () => displayNotes(notes.filter(note => note.color === 'rgb(236, 236, 236)')));
-redNotesButton.addEventListener('click', () => displayNotes(notes.filter(note => note.color === 'rgb(247, 136, 136)')));
-yellowNotesButton.addEventListener('click', () => displayNotes(notes.filter(note => note.color === 'rgb(243, 210, 80)')));
-greenNotesButton.addEventListener('click', () => displayNotes(notes.filter(note => note.color === 'rgb(136, 189, 188)')));
+whiteNotesButton.addEventListener('click', () => displayNotes(notes.filter(note => note.color === 'rgba(236, 236, 236, 0.5)')));
+redNotesButton.addEventListener('click', () => displayNotes(notes.filter(note => note.color === 'rgba(247, 136, 136, 0.5)')));
+yellowNotesButton.addEventListener('click', () => displayNotes(notes.filter(note => note.color === 'rgba(243, 210, 80, 0.5)')));
+greenNotesButton.addEventListener('click', () => displayNotes(notes.filter(note => note.color === 'rgba(136, 189, 188, 0.5)')));
 
 // Поиск заметок
 searchInput.addEventListener('input', () => {
