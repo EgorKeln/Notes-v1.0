@@ -71,6 +71,7 @@ document.addEventListener('DOMContentLoaded', () => { // Ждем полной �
     });
 
 
+
 // Функция для оборачивания даты и времени в span с классами
 function wrapDateAndTime(dateTime) {
     const date = new Date(dateTime);
@@ -82,11 +83,11 @@ function wrapDateAndTime(dateTime) {
     
     return `
         <span class="day">${day}</span>
-        <span class="separator">/</span>
+        <span class="separator">.</span>
         <span class="month">${month}</span>
-        <span class="separator">/</span>
+        <span class="separator">.</span>
         <span class="year">${year}</span>
-        <span class="separator">, </span>
+        <span class="separator"> </span>
         <span class="hours">${hours}</span>
         <span class="separator">:</span>
         <span class="minutes">${minutes}</span>
@@ -284,9 +285,9 @@ saveButton.addEventListener('click', () => {
             deadlineHtml = `
                 <span class="deadline-text">Дедлайн: </span>
                 <span class="deadline-day">${day}</span>
-                <span>-</span>
+                <span>.</span>
                 <span class="deadline-month">${month}</span>
-                <span>-</span>
+                <span>.</span>
                 <span class="deadline-year">${year}</span>
             `;
         }
@@ -385,6 +386,7 @@ greenNotesButton.addEventListener('click', () =>
     filterNotesByColor('rgba(136, 189, 188, 0.5)') ||
     filterNotesByColor('rgb(136, 189, 188)') // Фильтрация по двум цветам
 );
+
 
 
 // Функция для извлечения дедлайна из заметки
