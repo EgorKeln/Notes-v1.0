@@ -43,6 +43,7 @@ h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: 400;}
     --color3: #ECECEC;
     --color4: #88BDBC;
     --color5: #0000006a;
+    --color6: #000;
   }
 
 body {
@@ -192,10 +193,32 @@ input[type="text"] {
     border-radius: 5px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
+.note-date,
+.note-deadline {
+    width: 100%;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    /* margin-bottom: 5px; */
+    /* border: 1px solid red; */
+}
+.note-date-wrap,
+.note-deadline-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    width: auto;
+    /* min-height: 20px; */
+    padding-bottom: 5px;
+    /* background-color: #fff; */
+    color: var(--color6);
+    /* border-radius: 5px; */
+}
 .edit-note {
     /* border: 1px solid red; */
     background-color: #fff;
-    color: var(--color5);
+    color: var(--color6);
     font-size: 15px;
     padding: 5px;
     display: flex;
@@ -207,7 +230,7 @@ input[type="text"] {
 .delete-note {
     /* border: 1px solid red; */
     background-color: #fff;
-    color: var(--color5);
+    color: var(--color6);
     font-size: 15px;
     padding: 5px;
     margin-left: 10px;
@@ -537,6 +560,9 @@ input[type="text"] {
     .modal-content #closeNotification {
         font-size: 20px;
         padding: 5px 25px;
+    }
+    .nav-four {
+        display: none;
     }
 }
 /* ======================================================== */
